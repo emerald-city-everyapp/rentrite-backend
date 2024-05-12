@@ -1,5 +1,5 @@
 FROM eclipse-temurin:17-jdk-alpine as build
-COPY --chown=gradle:gradle . /home/gradle/src
+COPY . /home/gradle/src
 WORKDIR /home/gradle/src
 RUN ./gradlew build --no-daemon
 
