@@ -1,4 +1,14 @@
+FROM eclipse-temurin:17-jdk-alpine as build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN ./gradlew build --no-daemon
+
 FROM eclipse-temurin:17-jdk-alpine
-VOLUME /tmp
-COPY build/libs/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+
+EXPOSE 8080
+
+RUN mkdir /app
+
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
+
+ENTRYPOINT ["java", "-jar","/app/spring-boot-application.jar"]
