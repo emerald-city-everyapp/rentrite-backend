@@ -1,7 +1,7 @@
 FROM eclipse-temurin:17-jdk-alpine as build
 COPY . /home/gradle/src
 WORKDIR /home/gradle/src
-RUN ./gradlew build --warning-mode --no-daemon all
+RUN ./gradlew build --warning-mode all --no-daemon
 
 FROM eclipse-temurin:17-jdk-alpine
 
