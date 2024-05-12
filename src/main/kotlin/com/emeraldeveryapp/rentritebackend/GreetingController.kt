@@ -1,4 +1,4 @@
-package com.emeraldeveryapp.resttest
+package com.emeraldeveryapp.rentritebackend
 
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.GetMapping
