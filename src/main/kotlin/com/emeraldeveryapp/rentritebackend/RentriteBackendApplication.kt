@@ -12,3 +12,12 @@ class RentriteBackendApplication
 fun main(args: Array<String>) {
 	runApplication<RentriteBackendApplication>(*args)
 }
+
+@Bean
+fun corsConfigurer(): WebMvcConfigurer {
+	return object: WebMvcConfigurer {
+		override fun addCorsMappings(registry: CorsRegistry) {
+			registry.addMapping("/**").allowedOrigins("*")
+		}
+	}
+}
