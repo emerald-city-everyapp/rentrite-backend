@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
 fun corsConfigurer(): WebMvcConfigurer {
 	return object: WebMvcConfigurer {
 		override fun addCorsMappings(registry: CorsRegistry) {
-			registry.addMapping("/greeting").allowedOrigins("*")
+			registry.addMapping("/greeting").allowedOrigins("*").allowCredentials(true)
 		}
 	}
 }
