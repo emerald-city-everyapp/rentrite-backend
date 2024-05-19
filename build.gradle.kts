@@ -22,6 +22,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("com.zaxxer:HikariCP:3.4.5")
+	implementation("com.google.cloud:spring-cloud-gcp-dependencies:5.3.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
   	testImplementation("org.mockito:mockito-core:3.5.13")
 	testImplementation("org.apache.httpcomponents.client5:httpclient5")
