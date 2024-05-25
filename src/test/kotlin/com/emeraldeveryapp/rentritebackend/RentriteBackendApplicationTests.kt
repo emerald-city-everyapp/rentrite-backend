@@ -17,13 +17,13 @@ class RestTestApplicationTests(@Autowired val restTemplate: TestRestTemplate, @A
 
 	@BeforeEach
 	fun before() {
-		this.jdbcTemplate.execute("CREATE TABLE rental_profiles (address VARCHAR(255), PRIMARY KEY (address));")
-		this.jdbcTemplate.execute("INSERT INTO rental_profiles VALUES ('123 first street');")
+		this.jdbcTemplate.execute("CREATE TABLE rental_profile (address VARCHAR(255), PRIMARY KEY (address));")
+		this.jdbcTemplate.execute("INSERT INTO rental_profile VALUES ('123 first street');")
 	}
 
 	@AfterEach
 	fun after() {
-		this.jdbcTemplate.execute("DROP TABLE IF EXISTS rental_profiles")
+		this.jdbcTemplate.execute("DROP TABLE IF EXISTS rental_profile")
 	}
 
 	@Test

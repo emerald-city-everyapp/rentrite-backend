@@ -21,7 +21,7 @@ class GreetingController (@Autowired val jdbcTemplate: JdbcTemplate) {
     fun greeting(@RequestParam(value = "name", defaultValue = "World") name: String): Greeting {
         println("Db name: %s" + dbName)
         println("Db user: %s" + dbUser)
-        val queryResult = this.jdbcTemplate.queryForObject("SELECT address FROM rental_profiles", String::class.java)
+        val queryResult = this.jdbcTemplate.queryForObject("SELECT address FROM rental_profile", String::class.java)
         println("maeve" + queryResult)
         return Greeting(counter.incrementAndGet(), String.format(template, name, queryResult))
     }
