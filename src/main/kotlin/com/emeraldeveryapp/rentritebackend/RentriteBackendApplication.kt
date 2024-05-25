@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-class RentriteBackendApplication
+class RentriteBackendApplication 
 
 fun main(args: Array<String>) {
 	runApplication<RentriteBackendApplication>(*args)
