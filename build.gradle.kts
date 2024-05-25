@@ -25,6 +25,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-jdbc")
 	implementation(platform("com.google.cloud:spring-cloud-gcp-dependencies:5.3.0"))
 	implementation("com.google.cloud:spring-cloud-gcp-starter")
+	implementation("com.google.cloud.sql:mysql-socket-factory:1.13.1")
 	implementation("mysql:mysql-connector-java:8.0.33")
 	testImplementation("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
