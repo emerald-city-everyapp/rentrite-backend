@@ -22,9 +22,16 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.springframework.boot:spring-boot-starter-jdbc")
+	implementation(platform("com.google.cloud:spring-cloud-gcp-dependencies:5.3.0"))
+	implementation("com.google.cloud:spring-cloud-gcp-starter")
+	implementation("com.google.cloud.sql:mysql-socket-factory:1.13.1")
+	implementation("mysql:mysql-connector-java:8.0.33")
+	testImplementation("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
   	testImplementation("org.mockito:mockito-core:3.5.13")
 	testImplementation("org.apache.httpcomponents.client5:httpclient5")
+	testImplementation("org.springframework.boot:spring-boot-test-autoconfigure")
 }
 
 tasks.withType<KotlinCompile> {
