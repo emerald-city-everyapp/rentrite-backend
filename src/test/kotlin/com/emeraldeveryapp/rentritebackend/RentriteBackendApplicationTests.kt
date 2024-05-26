@@ -27,16 +27,23 @@ class RestTestApplicationTests(@Autowired val restTemplate: TestRestTemplate, @A
 	}
 
 	@Test
-	fun `Assert content and status code`() {
-		val entity = restTemplate.getForEntity("/greeting", Greeting::class.java)
-		assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
-		assertThat(entity.body).isEqualTo(Greeting(1, "Hello World! Query result 123 first street!"))
-	}
-
-	@Test
 	fun `Assert content for getRentalProfile and status code`() {
 		val entity = restTemplate.getForEntity("/rentalprofile", RentalProfile::class.java)
 		assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
 		assertThat(entity.body!!.address).isEqualTo("123 First Street, Arkham, MA")
+	}
+	
+	@Test
+	fun `Assert content and status code for newRentalProfile`() {
+		val rentalProfile = RentalProfile(
+			address = "abcd",
+			picNames = listOf("1"),
+			tags = listOf(RentalFeature.Parking),
+			comments = listOf("comment")
+		)
+
+		val result = restTemplate.postForEntity("/rentalprofile", rentalProfile, RentalProfile::class.java)
+		assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
+		assertThat(result.body!!.address).isEqualTo("abcd")
 	}
 }
