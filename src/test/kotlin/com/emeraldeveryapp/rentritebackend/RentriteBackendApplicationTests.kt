@@ -12,19 +12,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.jdbc.core.JdbcTemplate
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase()
-class RestTestApplicationTests(@Autowired val restTemplate: TestRestTemplate, @Autowired val jdbcTemplate: JdbcTemplate) {
-
-	@BeforeEach
-	fun before() {
-		this.jdbcTemplate.execute("CREATE TABLE rental_profile (address VARCHAR(255), PRIMARY KEY (address));")
-		this.jdbcTemplate.execute("INSERT INTO rental_profile VALUES ('123 first street');")
-	}
-
-	@AfterEach
-	fun after() {
-		this.jdbcTemplate.execute("DROP TABLE IF EXISTS rental_profile")
-	}
+// @AutoConfigureTestDatabase()
+class RestTestApplicationTests(@Autowired val restTemplate: TestRestTemplate) {
 
 	@Test
 	fun `Assert content for getRentalProfile and status code`() {
@@ -37,7 +26,7 @@ class RestTestApplicationTests(@Autowired val restTemplate: TestRestTemplate, @A
 	fun `Assert content and status code for newRentalProfile`() {
 		val rentalProfile = RentalProfile(
 			address = "abcd",
-			picNames = listOf("1"),
+			picIds = listOf("1"),
 			tags = listOf(RentalFeature.Parking),
 			comments = listOf("comment")
 		)

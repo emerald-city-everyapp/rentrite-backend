@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong
 
 @CrossOrigin
 @RestController
-class RentalProfileController (@Autowired val jdbcTemplate: JdbcTemplate) {
+class RentalProfileController () {
     val counter: AtomicLong = AtomicLong()
 
     @GetMapping("/rentalprofile")
