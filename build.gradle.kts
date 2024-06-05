@@ -36,8 +36,8 @@ dependencies {
 	implementation("org.postgresql:postgresql:42.2.18")
 	
 	// Testing
-	// testImplementation("com.h2database:h2")
 	testImplementation("io.zonky.test:embedded-database-spring-test:2.5.1")
+	testImplementation("io.zonky.test:embedded-postgres:1.2.10")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
   	testImplementation("org.mockito:mockito-core")
 	testImplementation("org.apache.httpcomponents.client5:httpclient5")
