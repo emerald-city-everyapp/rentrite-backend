@@ -1,6 +1,6 @@
 package com.emeraldeveryapp.rentritebackend.storage
 
-import com.emeraldeveryapp.rentritebackend.RentalFeature
+import com.emeraldeveryapp.rentritebackend.api.RentalFeature
 import java.io.IOException
 
 fun tagFromStorageToApi(tagVal: String): RentalFeature {

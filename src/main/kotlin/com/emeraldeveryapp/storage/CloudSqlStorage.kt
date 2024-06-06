@@ -3,9 +3,9 @@ package com.emeraldeveryapp.rentritebackend.storage
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import com.emeraldeveryapp.rentritebackend.RentalProfile
-import com.emeraldeveryapp.rentritebackend.Comment
-import com.emeraldeveryapp.rentritebackend.RentalFeature
+import com.emeraldeveryapp.rentritebackend.api.RentalProfile
+import com.emeraldeveryapp.rentritebackend.api.Comment
+import com.emeraldeveryapp.rentritebackend.api.RentalFeature
 import java.sql.ResultSet
 import java.sql.Connection
 import java.util.stream.Stream
@@ -75,7 +75,6 @@ class CloudSqlStorage (@Autowired val jdbcTemplate: JdbcTemplate) {
     fun getRentalProfile(address: String): RentalProfile? {
         val rentalResult = jdbcTemplate.queryForObject(
             GET_PROFILE_QUERY, rentalProfileMapper, address)
-        println(rentalResult)
         return rentalResult
     }
 

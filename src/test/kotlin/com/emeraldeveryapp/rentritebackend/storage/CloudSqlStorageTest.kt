@@ -11,8 +11,8 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator
 import org.springframework.core.io.ClassPathResource
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import javax.sql.DataSource
-import com.emeraldeveryapp.rentritebackend.RentalProfile
-import com.emeraldeveryapp.rentritebackend.RentalFeature
+import com.emeraldeveryapp.rentritebackend.api.RentalProfile
+import com.emeraldeveryapp.rentritebackend.api.RentalFeature
 
 @SpringBootTest
 @AutoConfigureEmbeddedDatabase

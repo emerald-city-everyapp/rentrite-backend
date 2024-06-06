@@ -1,4 +1,4 @@
-package com.emeraldeveryapp.rentritebackend
+package com.emeraldeveryapp.rentritebackend.api
 
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.GetMapping
@@ -9,28 +9,31 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.concurrent.atomic.AtomicLong
+import com.emeraldeveryapp.rentritebackend.storage.CloudSqlStorage
 
 @CrossOrigin
 @RestController
-class RentalProfileController () {
+class RentalProfileController (@Autowired val cloudSqlStorage: CloudSqlStorage) {
     val counter: AtomicLong = AtomicLong()
 
     @GetMapping("/rentalprofile")
     fun getRentalProfile(@RequestParam(value = "address", defaultValue = "") address: String): RentalProfile {
-        return RentalProfile(
-            address = "123 First Street, Arkham, MA",
-            listOf("pic1", "pic2"),
-            listOf(RentalFeature.Parking, RentalFeature.PetFriendly),
-            listOf(
-                "Excellent view of the downtown. The neighbors are loud with chanting at night.",
-                "The doors and fixtures seem to move around at night. Seriously, I swear the sink used to be over there...",
-                "Request addres is $address",
-                "Counter is ${counter.incrementAndGet()}"
-            ))
+        println("Looking up rental profile for address $address")
+        val profile = cloudSqlStorage.getRentalProfile(address)
+        if (profile != null) {
+            return profile
+        }
+        throw ProfileNotFoundException()
     }
     
     @PostMapping("/rentalprofile")
     fun newRentalProfile(@RequestBody rentalProfile: RentalProfile): RentalProfile {
+        println("Adding new rental profile for address ${rentalProfile.address}")
+        try {
+            cloudSqlStorage.insertRentalProfile(rentalProfile)
+        } catch (e: RuntimeException) {
+            throw PrfileAlreadyExistsException()
+        }
         return rentalProfile
     }
 }

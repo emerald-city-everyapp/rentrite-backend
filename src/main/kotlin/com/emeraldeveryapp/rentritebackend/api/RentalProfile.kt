@@ -1,4 +1,4 @@
-package com.emeraldeveryapp.rentritebackend
+package com.emeraldeveryapp.rentritebackend.api
 
 enum class RentalFeature {
     RegisteredToRent,
