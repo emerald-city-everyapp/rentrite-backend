@@ -5,12 +5,12 @@ VALUES
     ('693 MLK, New Salsburry', '{"pic"}');
 
 INSERT INTO comments
-    (comment_id, address, user_name, comment_text, tags)
+    (address, user_name, comment_text, tags)
 VALUES
-    (1203, '123 King Street, London', 'Janice', 'comment text', '{pet_friendly, parking}'),
-    (1303, '492 First Ave, Hamburg', 'Ted', 'comment text', '{shared_walls, mold}'),
-    (156, '693 MLK, New Salsburry', 'Janice', 'other comment', '{}'),
-    (1204, '123 King Street, London', 'Janice', 'extra comment info', '{mold}');
+    ('123 King Street, London', 'Janice', 'comment text', '{pet_friendly, parking}'),
+    ('492 First Ave, Hamburg', 'Ted', 'comment text', '{shared_walls, mold}'),
+    ('693 MLK, New Salsburry', 'Janice', 'other comment', '{}'),
+    ('123 King Street, London', 'Janice', 'extra comment info', '{mold}');
         
 INSERT INTO users
     (user_name, email)

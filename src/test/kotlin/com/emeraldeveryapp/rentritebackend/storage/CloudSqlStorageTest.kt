@@ -17,17 +17,17 @@ import com.emeraldeveryapp.rentritebackend.RentalFeature
 @SpringBootTest
 @AutoConfigureEmbeddedDatabase
 class CloudSqlStorageTest(@Autowired val jdbcTemplate: JdbcTemplate, @Autowired val cloudSqlStorage: CloudSqlStorage) {
-    val TEST_ADDRESS = "123 King Street, London"
-    val TEST_PIC_LIST = listOf("pic1", "pic2")
-    val TEST_TAG_LIST =
+    val SEEDED_TEST_ADDRESS = "123 King Street, London"
+    val SEEDED_TEST_PIC_LIST = listOf("pic1", "pic2")
+    val SEEDED_TEST_TAG_LIST =
         listOf(RentalFeature.PetFriendly, RentalFeature.Parking, RentalFeature.Mold)
-    val TEST_COMMENT_LIST =
+    val SEEDED_TEST_COMMENT_LIST =
         listOf("comment text", "extra comment info")
     val TEST_COMMENT = "some mean comment"
     val TEST_PROFILE = RentalProfile(
         "Some new addres yeah",
-        TEST_PIC_LIST,
-        TEST_TAG_LIST,
+        listOf("first pic name", "Second pic name"),
+        listOf(RentalFeature.AccessoryDwellingUnit),
         listOf(TEST_COMMENT)
     )
 
@@ -49,18 +49,29 @@ class CloudSqlStorageTest(@Autowired val jdbcTemplate: JdbcTemplate, @Autowired 
 
     @Test
     fun `Assert get rental profile succeeds`() {
-        val resultProfile = cloudSqlStorage.getRentalProfile(TEST_ADDRESS)
-        assertThat(resultProfile!!.address).isEqualTo(TEST_ADDRESS)
-        assertThat(resultProfile.picIds).containsAll(TEST_PIC_LIST)
-        assertThat(resultProfile.tags).containsAll(TEST_TAG_LIST)
-        assertThat(resultProfile.comments).containsAll(TEST_COMMENT_LIST)
+        val resultProfile = cloudSqlStorage.getRentalProfile(SEEDED_TEST_ADDRESS)
+        assertThat(resultProfile!!.address).isEqualTo(SEEDED_TEST_ADDRESS)
+        assertThat(resultProfile.picIds).containsAll(SEEDED_TEST_PIC_LIST)
+        assertThat(resultProfile.tags).containsAll(SEEDED_TEST_TAG_LIST)
+        assertThat(resultProfile.comments).containsAll(SEEDED_TEST_COMMENT_LIST)
     }
     
-    // @Test
-    // fun `Assert new rental profile insert succeeds`() {
-    //     cloudSqlStorage.insertRentalProfile(TEST_PROFILE)
+    @Test
+    fun `Assert insert comment succeeds`() {
+        val newUser = "new user name"
+        val newComment = "Some new comment text"
+        val newTags = listOf(RentalFeature.SharedWalls)
+        cloudSqlStorage.insertComment(SEEDED_TEST_ADDRESS, newUser, newComment, newTags)
+    }
+    
+    @Test
+    fun `Assert new rental profile insert succeeds`() {
+        cloudSqlStorage.insertRentalProfile(TEST_PROFILE)
         
-    //     val resultProfile = cloudSqlStorage.getRentalProfile(TEST_PROFILE.address)
-    //     println(resultProfile)
-    // }
+        val resultProfile = cloudSqlStorage.getRentalProfile(TEST_PROFILE.address)
+        assertThat(resultProfile!!.address).isEqualTo(TEST_PROFILE.address)
+        assertThat(resultProfile.picIds).containsExactlyInAnyOrderElementsOf(TEST_PROFILE.picIds)
+        assertThat(resultProfile.comments.get(0)).isEqualTo(TEST_COMMENT)
+        assertThat(resultProfile.comments.size).isEqualTo(1)
+    }
 }

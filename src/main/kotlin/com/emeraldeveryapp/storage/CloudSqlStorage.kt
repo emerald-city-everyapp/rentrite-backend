@@ -4,8 +4,10 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import com.emeraldeveryapp.rentritebackend.RentalProfile
+import com.emeraldeveryapp.rentritebackend.Comment
 import com.emeraldeveryapp.rentritebackend.RentalFeature
 import java.sql.ResultSet
+import java.sql.Connection
 import java.util.stream.Stream
 import kotlinx.serialization.json.Json
 import kotlin.reflect.typeOf
@@ -28,21 +30,36 @@ class CloudSqlStorage (@Autowired val jdbcTemplate: JdbcTemplate) {
             WHERE rp.address = ?
             GROUP BY rp.address, rp.pics
         """
+    val GET_COMMENT_BY_USER_QUERY =
+        """
+            SELECT
+                c.comment_id AS id,
+                c.tags AS tags,
+                c.comment_text AS text,
+                c.user_name AS user_name
+            FROM comments c
+            WHERE c.user_name = ?
+        """
     val INSERT_PROFILE_QUERY =
         """
-            INSERT INTO rental_profiles (address, pics)
+            INSERT INTO rental_profiles
+                (address, pics)
             VALUES
-                ROW(?, JSON_ARRAY(?));
+                (?, ?);
         """
     val INSERT_COMMENT_QUERY =
         """
             INSERT INTO comments
                 (address, user_name, comment_text, tags)
             VALUES
-                ROW(?, ?, ?, JSON_ARRAY(?));
+                (?, ?, ?, ?);
         """
     val INSERT_USER_QUERY =
         """
+            INSERT INTO users
+                (user_name, email)
+            VALUES
+                (?, ?)
         """
     
     val rentalProfileMapper = 
@@ -61,18 +78,50 @@ class CloudSqlStorage (@Autowired val jdbcTemplate: JdbcTemplate) {
         println(rentalResult)
         return rentalResult
     }
-    
-    // fun insertRentalProfile(profile: RentalProfile) {
-    //     val formattedPicList = profile.picIds.joinToString(", ") { String.format("\'$it\'") }
 
-    //     jdbcTemplate.update(INSERT_PROFILE_QUERY, profile.address, formattedPicList)
-    //     for (comment in profile.comments) {
-    //         insertComment(profile.address, "placeholder", comment, listOf())
-    //     }
+    // fun getCommentByUser(userName: String): List<Comment> {
+    //     val comments = jdbcTemplate.queryForList<List<Comment>>(GET_COMMENT_BY_USER_QUERY, , userName)
     // }
     
-    // fun insertComment(address: String, userName: String, commentText: String, tags: List<RentalFeature>) {
-    //     val formattedTagList = tags.joinToString(", ") { String.format("\'$it\'") }
-    //     jdbcTemplate.update(INSERT_COMMENT_QUERY, address, userName, commentText, formattedTagList)
-    // }
+    
+    fun insertRentalProfile(profile: RentalProfile) {
+        if (profile.comments.size > 1) {
+            throw IllegalArgumentException("Only one comment may be specified on a new profile.")
+        }
+
+        jdbcTemplate.update(
+            INSERT_PROFILE_QUERY,
+            profile.address,
+            createPicsSqlArray(profile.picIds))
+        // TODO: replace placeholder with user name and add user
+        insertComment(profile.address, "placeholder", profile.comments.get(0), profile.tags)
+    }
+
+    fun insertComment(address: String, userName: String, commentText: String, tags: List<RentalFeature>) {
+        jdbcTemplate.update(
+            INSERT_COMMENT_QUERY,
+            address,
+            userName,
+            commentText,
+            createTagSqlArray(tags))
+    }
+    
+    fun insertUser(userName: String, userEmail: String) {
+        jdbcTemplate.update(
+            INSERT_USER_QUERY,
+            userName,
+            userEmail
+        )
+    }
+    
+    private fun createTagSqlArray(tags: List<RentalFeature>): java.sql.Array? {
+        val dbTagList = tags.asSequence().map { tagFromApiToStorage(it) }.toList()
+        return jdbcTemplate.getDataSource()?.getConnection()
+        ?.createArrayOf("comment_tag", dbTagList.toTypedArray())
+    }
+
+    private fun createPicsSqlArray(pics: List<String>): java.sql.Array? {
+        return jdbcTemplate.getDataSource()?.getConnection()
+        ?.createArrayOf("text", pics.toTypedArray())
+    }
 }
