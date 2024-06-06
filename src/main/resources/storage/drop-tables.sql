@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS rental_profiles;
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS users;
+DROP TYPE IF EXISTS comment_tag;
